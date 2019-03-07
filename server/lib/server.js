@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 const publicFolderPath = path.join(__dirname, "../public");
 const indexHtmlPath = path.join(publicFolderPath, "index.html");
@@ -13,6 +13,10 @@ app.get("/api", (req, res) => {
 
 app.get("/code", (req, res) => {
   res.send("/code");
+});
+
+app.get("/deploy", (req, res) => {
+  res.send("/deploy");
 });
 
 // register static file middle ware

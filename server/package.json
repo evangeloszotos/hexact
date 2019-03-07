@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "nodemon ./lib/server.js"
+    "start": "node ./lib/server.js",
+    "dev": "nodemon ./lib/server.js",
+    "wp": "webpack"
   },
   "author": "",
   "license": "ISC",
