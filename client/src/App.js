@@ -30,7 +30,7 @@ class App extends Component {
           <button onClick={() => this.loadData("/api")}>Get Api</button>
           <button onClick={() => this.loadData("/code")}>Get Code</button>
           
-          <h1>sweeeeety - once more! oh FULL hellas!</h1>
+          <h1>sweeeeety - once more! oh FULL; hellas! </h1>
 
           <p>{this.state.text}</p>
           <a
