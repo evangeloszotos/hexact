@@ -1,18 +1,22 @@
 {
-  "name": "drm",
+  "name": "deployer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "gulp",
-    "g": "gulp",
-    "sh": "node sh.js"
+    "gulp": "gulp --series",
+    "deploy:dev": "gulp dev deploy",
+    "open:dev": "gulp dev open"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "gulp": "^4.0.0",
+    "gulp-cli": "^2.0.1",
     "gulp-copy": "^4.0.1",
-    "shelljs": "^0.8.3"
+    "links-on-terminal": "^1.0.1",
+    "opn": "^5.4.0",
+    "shelljs": "^0.8.3",
+    "yargs": "^13.2.2"
   }
 }

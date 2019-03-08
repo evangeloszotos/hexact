@@ -1,0 +1,10 @@
+{
+  "server": {
+    "root": "customDist2",
+    "publicPath": "/public"
+  },
+  "env": {
+    "dev": "dev-zotopia-power",
+    "qa": "qa-zotopia-power"
+  }
+}
