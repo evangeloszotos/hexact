@@ -1,9 +1,0 @@
-{
-  "buildRoot": "../dist",
-  "serverRoot": "server",
-  "clientRoot": "client",
-  "apps": {
-    "dev": "dev-zotopia-power",
-    "qa": "qa-zotopia-power"
-  }
-}

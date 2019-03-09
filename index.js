@@ -2,7 +2,6 @@
 const packageName = require("./package.json").name;
 const shell = require("shelljs");
 const argv = require("yargs").argv;
-const userConfigFileName = "deployer.config.json";
 const pwd = shell.pwd().toString();
 
 const userConfig = require(`${pwd}/${userConfigFileName}`);

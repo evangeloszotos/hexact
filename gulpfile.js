@@ -5,8 +5,17 @@ const shell = require("shelljs");
 const opn = require("opn");
 var _mergeWith = require("lodash.mergewith");
 
-const defaultConfig = require("./deployer.config.default.json");
-const userConfig = require("./deployer.config.json");
+const rootWorkingDirectory =
+  process.env["DEPENDENT_STARTUP_PATH"] || shell.pwd().toString();
+const defaultConfig = require("./hexact.config.default.json");
+
+const userConfig = require(path.join(
+  rootWorkingDirectory,
+  "hexact.config.json"
+));
+
+console.log(userConfig);
+console.log(rootWorkingDirectory);
 
 function keepUserArrayCustomizer(objValue, srcValue) {
   if (Array.isArray(srcValue)) {
@@ -35,10 +44,11 @@ function setEnvironment(config, url) {
   config.appName = url;
 }
 
-const rootWorkingDirectory = shell.pwd();
 function cdRoot() {
   shell.cd(rootWorkingDirectory);
 }
+
+console.log("PWD: " + rootWorkingDirectory);
 
 Object.keys(config.apps).forEach(environmentKey => {
   gulp.task(environmentKey, done => {
@@ -104,7 +114,7 @@ gulp.task("copy-client", () => {
 
   const publicFolder = path.join(config.buildRoot, config.server.public);
 
-  return gulp.src(clientFiles).pipe(gulpCopy(publicFolder, { prefix: 2 }));
+  return gulp.src(clientFiles).pipe(gulpCopy(publicFolder, { prefix: 3 }));
 });
 
 gulp.task("precopy-client", done => {
@@ -172,7 +182,7 @@ gulp.task("git-push", done => {
 
 gulp.task(
   "deploy",
-  gulp.series("check-gitUrl", "build", "git-init", "git-push", "clean")
+  gulp.series("check-gitUrl", "build", "git-init", "git-push")
 );
 
 gulp.task(
@@ -182,9 +192,12 @@ gulp.task(
     shell.cd(config.buildRoot);
 
     console.log("Run: npm install");
+
+    shell.env["NODE_ENV"] = "production";
     shell.exec("npm install");
 
     console.log("starting local build!");
+
     shell.exec("npm start");
 
     done();
@@ -205,5 +218,10 @@ gulp.task("open", done => {
 gulp.task("print-gitUrl", done => {
   console.log("gitUrl: " + config.appName);
 
+  done();
+});
+
+gulp.task("hw", done => {
+  console.log("hello world!");
   done();
 });

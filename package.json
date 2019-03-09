@@ -1,20 +1,20 @@
 {
-  "name": "deployer",
-  "version": "1.0.0",
+  "name": "hexact",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "gulp": "gulp --series",
-    "deploy:dev": "gulp dev deploy",
-    "open:dev": "gulp dev open"
+    "gulp": "gulp --series"
   },
-  "author": "",
-  "license": "ISC",
+  "bin": {
+    "hexact": "index.js"
+  },
+  "author": "Evangelos Zotos",
+  "license": "MIT",
   "dependencies": {
     "gulp": "^4.0.0",
     "gulp-cli": "^2.0.1",
     "gulp-copy": "^4.0.1",
-    "links-on-terminal": "^1.0.1",
     "lodash.mergewith": "^4.6.1",
     "opn": "^5.4.0",
     "shelljs": "^0.8.3",
