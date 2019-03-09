@@ -1,11 +1,11 @@
 {
-  "buildRoot": "dist",
+  "buildRoot": "../dist",
   "server": {
-    "root": "server",
+    "root": ".",
     "public": "public"
   },
   "client": {
-    "root": "client",
+    "root": "../client",
     "public": ":root/build",
     "precopy": [["cd", ":root"], ["exec", "npm run build"]],
     "exclude": [".map"]    

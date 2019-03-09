@@ -105,7 +105,7 @@ gulp.task("copy-client", () => {
 
     if (config.client.exclude) {
       config.client.exclude.forEach(excludePattern => {
-        clientFiles.push(`!**/*${excludePattern}`);
+        clientFiles.push(`!${config.client.root}/**/*${excludePattern}`);
       });
     }
   }
@@ -182,8 +182,20 @@ gulp.task("git-push", done => {
 
 gulp.task(
   "deploy",
-  gulp.series("check-gitUrl", "build", "git-init", "git-push")
+  gulp.series("check-gitUrl", "build", "git-init", "git-push", "clean")
 );
+
+gulp.task("install-client", done => {
+  cdRoot();
+  shell.cd(config.client.root);
+
+  console.log("Run: npm install");
+
+  shell.exec("npm install");
+
+  console.log("client installed");
+  done();
+});
 
 gulp.task(
   "local",
