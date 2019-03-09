@@ -1,8 +1,8 @@
 {
-  "server": {
-    "root": "customDist2",
-    "publicPath": "/public"
-  },
+  "buildRoot": "dist",
+  
+  "serverRoot": "server",
+  "clientRoot": "client",
   "env": {
     "dev": "dev-zotopia-power",
     "qa": "qa-zotopia-power"

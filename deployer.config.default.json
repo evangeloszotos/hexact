@@ -1,0 +1,16 @@
+{
+  "buildRoot": "dist",
+  "server": {
+    "root": "dist",
+    "publicPath": "public"
+  },
+  "client": {
+    "root": "client",
+    "public": ":root/build",
+    "precopy": [["cd", ":root"], ["exec", "npm run build"]],
+    "exclude": [".map"]    
+  },
+  "env": {},
+  "webUrlPattern": "https://:appName.herokuapp.com",
+  "gitUrlPattern": "https://git.heroku.com/:appName.git"
+}
