@@ -1,9 +1,8 @@
 {
-  "buildRoot": "dist",
-  
+  "buildRoot": "../dist",
   "serverRoot": "server",
   "clientRoot": "client",
-  "env": {
+  "apps": {
     "dev": "dev-zotopia-power",
     "qa": "qa-zotopia-power"
   }

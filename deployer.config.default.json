@@ -1,8 +1,8 @@
 {
   "buildRoot": "dist",
   "server": {
-    "root": "dist",
-    "publicPath": "public"
+    "root": "server",
+    "public": "public"
   },
   "client": {
     "root": "client",

@@ -40,10 +40,10 @@ function cdRoot() {
   shell.cd(rootWorkingDirectory);
 }
 
-Object.keys(config.env).forEach(environmentKey => {
+Object.keys(config.apps).forEach(environmentKey => {
   gulp.task(environmentKey, done => {
     console.log(environmentKey);
-    setEnvironment(config, config.env[environmentKey]);
+    setEnvironment(config, config.apps[environmentKey]);
     done();
   });
 });
@@ -58,20 +58,19 @@ gulp.task("check-gitUrl", done => {
 
 gulp.task("clean", done => {
   cdRoot();
-  shell.rm("-rf", config.server.root);
+  shell.rm("-rf", config.buildRoot);
   done();
 });
 
 gulp.task("copy-server", () => {
   cdRoot();
   const serverFiles = [
-    `${config.server.root}**/*`,
-    "!server/node_modules/**/*"
+    `${config.server.root}/**/*`,
+    `${config.server.root}/**/.*`,
+    `!${config.server.root}/node_modules/**/*`
   ];
 
-  return gulp
-    .src(serverFiles)
-    .pipe(gulpCopy(config.buildRoot, { prefix: 1 }));
+  return gulp.src(serverFiles).pipe(gulpCopy(config.buildRoot, { prefix: 0 }));
 });
 
 function renderTemplate(tmpl, placeholder, value) {
@@ -103,7 +102,7 @@ gulp.task("copy-client", () => {
 
   console.log(clientFiles);
 
-  const publicFolder = path.join(config.server.root, config.server.publicPath);
+  const publicFolder = path.join(config.buildRoot, config.server.public);
 
   return gulp.src(clientFiles).pipe(gulpCopy(publicFolder, { prefix: 2 }));
 });
@@ -139,7 +138,7 @@ gulp.task("git-init", done => {
     config.appName
   );
 
-  shell.cd(config.server.root);
+  shell.cd(config.buildRoot);
 
   shell.exec("git init");
   shell.exec(`git remote add heroku ${gitUrl}`);
@@ -162,7 +161,7 @@ gulp.task("git-push", done => {
   cdRoot();
   createApp();
 
-  shell.cd(config.server.root);
+  shell.cd(config.buildRoot);
 
   shell.exec("git add .");
   shell.exec("git commit -m deplyment");
@@ -180,7 +179,7 @@ gulp.task(
   "local",
   gulp.series("build", done => {
     cdRoot();
-    shell.cd(config.server.root);
+    shell.cd(config.buildRoot);
 
     console.log("Run: npm install");
     shell.exec("npm install");
