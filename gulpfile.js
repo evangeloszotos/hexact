@@ -3,19 +3,18 @@ const gulpCopy = require("gulp-copy");
 const path = require("path");
 const shell = require("shelljs");
 const opn = require("opn");
+const gti = require("gulp-task-if");
 var _mergeWith = require("lodash.mergewith");
+const settings = require("./settings");
 
 const rootWorkingDirectory =
   process.env["DEPENDENT_STARTUP_PATH"] || shell.pwd().toString();
-const defaultConfig = require("./hexact.config.default.json");
+const defaultConfig = require(`./${settings.defaultConfigFilename}`);
 
 const userConfig = require(path.join(
   rootWorkingDirectory,
-  "hexact.config.json"
+  settings.userConfigFilename
 ));
-
-console.log(userConfig);
-console.log(rootWorkingDirectory);
 
 function keepUserArrayCustomizer(objValue, srcValue) {
   if (Array.isArray(srcValue)) {
@@ -35,7 +34,14 @@ if (userConfig.clientRoot && !userConfig.client) {
   };
 }
 
+if (userConfig.ignoreClient && !userConfig.client) {
+  userConfig.client = {
+    isActive: !userConfig.ignoreClient
+  };
+}
+
 const config = _mergeWith(defaultConfig, userConfig, keepUserArrayCustomizer);
+console.log(config);
 
 const appNamePlaceHolder = ":appName";
 const clientRootPlaceHolder = ":root";
@@ -47,8 +53,6 @@ function setEnvironment(config, url) {
 function cdRoot() {
   shell.cd(rootWorkingDirectory);
 }
-
-console.log("PWD: " + rootWorkingDirectory);
 
 Object.keys(config.apps).forEach(environmentKey => {
   gulp.task(environmentKey, done => {
@@ -110,15 +114,12 @@ gulp.task("copy-client", () => {
     }
   }
 
-  console.log(clientFiles);
-
   const publicFolder = path.join(config.buildRoot, config.server.public);
-
   return gulp.src(clientFiles).pipe(gulpCopy(publicFolder, { prefix: 3 }));
 });
 
 gulp.task("precopy-client", done => {
-  cdRoot();
+  console.log("Hello from precoppy"), cdRoot();
   if (config.client) {
     if (config.client.precopy) {
       config.client.precopy.forEach(command => {
@@ -136,9 +137,11 @@ gulp.task("precopy-client", done => {
 });
 
 gulp.task(
-  "build",
-  gulp.series("clean", "copy-server", "precopy-client", "copy-client")
+  "process-client",
+  gulp.series(gti(config.client.isActive, "precopy-client", "copy-client"))
 );
+
+gulp.task("build", gulp.series("clean", "copy-server", "process-client"));
 
 gulp.task("git-init", done => {
   cdRoot();

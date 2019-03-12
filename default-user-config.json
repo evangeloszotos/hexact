@@ -1,0 +1,6 @@
+{
+  "ignoreClient": true,
+  "apps": {
+    "dev": "my-awesome-app"
+  }
+}
